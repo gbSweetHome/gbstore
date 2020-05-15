@@ -1,0 +1,22 @@
+info:
+  contact: {}
+  license: {}
+paths:
+  /api/v1/tags:
+    post:
+      parameters:
+      - description: Name
+        in: query
+        name: name
+        required: true
+        type: string
+      - description: State
+        in: query
+        name: state
+        type: integer
+      - description: CreatedBy
+        in: query
+        name: created_by
+        type: integer
+      summary: 新增文章标签
+swagger: "2.0"
