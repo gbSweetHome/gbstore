@@ -1,0 +1,60 @@
+kind: pipeline
+name: default
+
+trigger:
+  branch:
+    - master
+    - dev
+  event:
+    - push
+
+# 全剧变量
+global-variables:
+  registry: &registry ccr.ccs.tencentyun.com
+  repo: &repo ccr.ccs.tencentyun.com/mirrorsge/gbstoreBE
+
+default:
+  - &docker_setting
+    username:
+      from_secret: registry_name
+    password:
+      from_secret: registry_secret
+    registry: *registry
+    repo: *repo
+    dockerfile: Dockerfile
+
+steps:
+  - name: build-binary
+    image: golang:1.14
+    environment:
+      GO111MODULE: on
+      GOPROXY: https://goproxy.io
+    commands:
+      - go mod download
+      - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o main ./main.go
+
+  - name: build-docker-repo
+    image: plugins/docker
+    settings:
+      <<: *docker_setting
+      tags:
+        - ${DRONE_BRANCH//\//-}-${DRONE_BUILD_NUMBER}
+        - ${DRONE_BRANCH//\//-}-latest
+
+  - name: deploy-k8s
+    image: quay.io/honestbee/drone-kubernetes
+    settings:
+      kubernetes_server:
+        from_secret: k8s_server
+      kubernetes_token:
+        from_secret: k8s_secret
+      namespace: default
+      deployment: gbstoreBE-deployment
+      container: gbstoreBE
+      repo: *repo
+      tag: ${DRONE_BRANCH//\//-}-latest
+    when:
+      branch:
+        - master
+      event:
+        - push
