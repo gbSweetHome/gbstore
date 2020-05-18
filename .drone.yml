@@ -11,7 +11,7 @@ trigger:
 # 全剧变量
 global-variables:
   registry: &registry ccr.ccs.tencentyun.com
-  repo: &repo ccr.ccs.tencentyun.com/mirrorsge/gbstoreBE
+  repo: &repo ccr.ccs.tencentyun.com/mirrorsge/gbstore_be
 
 default:
   - &docker_setting
@@ -49,8 +49,8 @@ steps:
       kubernetes_token:
         from_secret: k8s_secret
       namespace: default
-      deployment: gbstoreBE-deployment
-      container: gbstoreBE
+      deployment: gbstore_be_deployment
+      container: gbstore_be
       repo: *repo
       tag: ${DRONE_BRANCH//\//-}-latest
     when:
