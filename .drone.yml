@@ -56,6 +56,5 @@ steps:
     when:
       branch:
         - master
-        - dev
       event:
         - push
