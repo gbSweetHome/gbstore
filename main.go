@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gbstore/config"
 	"gbstore/controller"
 	_ "gbstore/docs"
 	"gbstore/model"
@@ -10,8 +11,9 @@ import (
 )
 
 func main() {
-	r := gin.Default()
+	config.Setup()
 	model.SetProduct()
+	r := gin.Default()
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.POST("/login", controller.Login)

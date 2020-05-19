@@ -1,0 +1,5 @@
+[app]
+mode = "debug"
+[db]
+type = "mysql"
+DSN = "root:12345678@tcp(gbstore-be-database-deployment:3306)/gbstore?charset=utf8&parseTime=True&loc=Local"

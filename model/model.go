@@ -1,6 +1,7 @@
 package model
 
 import (
+	"gbstore/config"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
@@ -10,7 +11,7 @@ var db *gorm.DB
 
 func SetProduct() {
 	var err error
-	db, err = gorm.Open("mysql", "root:12345678@tcp(127.0.0.1:3306)/gbstore?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open(config.Conf.DB.Type, config.Conf.DB.DSN)
 	if err != nil {
 		log.Println(err)
 	}
