@@ -49,8 +49,8 @@ steps:
       kubernetes_token:
         from_secret: k8s_secret
       namespace: default
-      deployment: gbstore_be_deployment
-      container: gbstore_be
+      deployment: gbstore-be-deployment
+      container: gbstore-be
       repo: *repo
       tag: ${DRONE_BRANCH//\//-}-latest
     when:
